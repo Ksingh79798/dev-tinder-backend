@@ -25,10 +25,18 @@ app.use(express.json());
 //   })
 // );
 /* -------  or ----------*/
+// const corsOptions = {
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true,
+// };
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: "*", // Allow all origins
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 app.use(cors(corsOptions));
 
 app.use("/", authRouter);
