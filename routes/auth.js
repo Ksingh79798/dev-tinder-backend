@@ -39,7 +39,17 @@ authRouter.post("/signup", async (req, res) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
     });
-    res.json({ message: "User Added successfully!", data: savedUser });
+    // res.json({
+    //   message: "User Added successfully!",
+    //   data: savedUser,
+
+    // });
+
+    res.json({
+      message: "User Added successfully!",
+      data: savedUser,
+      token: token,
+    });
   } catch (err) {
     // console.log(err);
     res.status(400).send("ERROR hai:" + err.message);
@@ -63,15 +73,25 @@ authRouter.post("/login", async (req, res) => {
     const isPasswordValid = await user.validatePassword(password);
     if (isPasswordValid) {
       const token = await user.getJWT();
-      res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000),
-      });
-      console.log("Token:..." + token);
+      // res.cookie("token", token, {
+      //   expires: new Date(Date.now() + 8 * 3600000),
+      // });
+      // console.log("Token:..." + token);
 
-      console.log(
-        user.firstName + " " + user.lastName + " " + "is Login Successful!"
-      );
-      res.send(user);
+      // console.log(
+      //   user.firstName + " " + user.lastName + " " + "is Login Successful!"
+      // );
+      // res.send(user);
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
+      res.cookie("token", token, options).status(200).json({
+        success: true,
+        token,
+        user,
+        message: `User Login Success`,
+      });
     } else {
       throw new Error("Invalid Credential!");
     }

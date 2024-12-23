@@ -144,7 +144,7 @@ ConnectDB()
   .then(() => {
     console.log("DB Connection Establish");
     app.listen(port, () => {
-      console.log("Server is successfully started");
+      console.log("Server is successfully started", port);
     });
   })
   .catch((err) => {
