@@ -31,7 +31,8 @@ app.use(express.json());
 // };
 
 const corsOptions = {
-  origin: "*", // Allow all origins
+  // origin: "*", // Allow all origins
+  origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
