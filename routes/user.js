@@ -8,6 +8,7 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
+
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
   // here we make a get call from the db & get all the CR of this loggedInUser
   try {
@@ -80,7 +81,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     // .populate("fromUserId", "firstName")
     // .populate("toUserId", "firstName");
 
-    console.log("CR:-", connectionRequests);
+    // console.log("CR:-", connectionRequests);
 
     // corner-case:- hide user from feed
     const hideUsersFromFeed = new Set();
@@ -88,7 +89,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       hideUsersFromFeed.add(req.fromUserId.toString());
       hideUsersFromFeed.add(req.toUserId.toString());
     });
-    console.log(hideUsersFromFeed);
+    // console.log(hideUsersFromFeed);
     // Db call for User
     const users = await User.find({
       $and: [
@@ -101,8 +102,12 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       .select(USER_SAFE_DATA)
       .skip(skip)
       .limit(limit);
-    console.log("User:-", users);
-    res.json({ data: users });
+    // console.log("User:-", users);
+    // res.json({ data: users });
+    res.json({
+      success: true,
+      data: req.user,
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

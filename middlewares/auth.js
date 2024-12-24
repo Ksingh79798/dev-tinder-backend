@@ -41,7 +41,8 @@ const PASSWORD = process.env.PASSWORD;
 const userAuth = async (req, res, next) => {
   try {
     // Get token from cookies or Authorization header
-    let token = req.cookies?.token;
+    let token = req?.cookies?.token;
+    console.log("Token:----", token);
 
     // Check Authorization header if no cookie token
     if (!token && req.headers.authorization) {
@@ -58,7 +59,7 @@ const userAuth = async (req, res, next) => {
     try {
       const decoded = await jwt.verify(token, PASSWORD);
       const user = await User.findById(decoded._id);
-
+      console.log("hiiii");
       if (!user) {
         return res.status(401).json({
           success: false,
